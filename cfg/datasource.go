@@ -6,7 +6,7 @@ type InnerConfig struct {
 
 type DataSource struct {
 	RDS   RDSConf   `json:"rds"`
-	Redis RedisConf `json:"redis"`
+	Redis RedisConf `json:"cache"`
 }
 
 type RDSConf struct {
