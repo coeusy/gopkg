@@ -1,21 +1,10 @@
 package cfg
 
 import (
-	"flag"
-	"strings"
-
 	jsoniter "github.com/json-iterator/go"
 	"github.com/spf13/viper"
 	"go.uber.org/zap"
 )
-
-var (
-	manager *Manager
-)
-
-func InitConfigFromArgs() {
-	manager = NewManagerFromArgs()
-}
 
 type Manager struct {
 	*viper.Viper
@@ -74,34 +63,4 @@ func NewManager(options ...Option) *Manager {
 		m.Viper.Set(key, conf[key])
 	}
 	return &m
-}
-
-func NewManagerFromArgs() *Manager {
-	flagOpt := Option{}
-	flag.StringVar(&flagOpt.Path, "cfg.path", "conf/", "string: path of configuration, default is conf/")
-	flag.BoolVar(&flagOpt.NeedDatasource, "cfg.datasource", true, "boolean: use datasource config or not, default is true")
-
-	var files string
-	flag.StringVar(&files, "cfg.files", "", "string: config filename seperated by comma")
-	flagOpt.ConfigList = strings.Split(files, ",")
-
-	var fileType string
-	flag.StringVar(&fileType, "cfg.type", "yml", "string: config file type, such as json, yml, yaml, default is yml")
-	flagOpt.FileType = FileType(fileType)
-	return NewManager(flagOpt)
-}
-
-func GetConfig() *Manager {
-	return manager
-}
-
-func GetDatasource() DataSource {
-	if manager == nil {
-		return DataSource{}
-	}
-	return manager.datasource
-}
-
-func GetKafka() KafkaConf {
-	return GetDatasource().Kafka
 }

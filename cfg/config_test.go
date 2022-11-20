@@ -1,8 +1,6 @@
 package cfg
 
 import (
-	"fmt"
-	"os"
 	"testing"
 
 	jsoniter "github.com/json-iterator/go"
@@ -18,21 +16,4 @@ func TestNewManager(t *testing.T) {
 	m := NewManager(opt)
 	conf, _ := jsoniter.MarshalToString(m.AllSettings())
 	zap.L().Sugar().Infof(conf)
-}
-
-func TestGetConfig(t *testing.T) {
-	os.Args = []string{"cfg.path=../conf", "cfg.files=runtime"}
-	logger.InitZap("../log/test")
-	InitConfigFromArgs()
-	m := GetConfig()
-	conf, _ := jsoniter.MarshalToString(m.AllSettings())
-	zap.L().Sugar().Infof(conf)
-	zap.L().Sugar().Infof("%+v", m.GetDatasource())
-}
-
-func TestGetKafka(t *testing.T) {
-	os.Args = []string{"cfg.path=../conf", "cfg.files=runtime"}
-	logger.InitZap("../log/test")
-	InitConfigFromArgs()
-	fmt.Println(GetKafka())
 }

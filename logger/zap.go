@@ -1,7 +1,6 @@
 package logger
 
 import (
-	"flag"
 	"fmt"
 	"os"
 	"time"
@@ -15,12 +14,6 @@ func InitZap(filename string) {
 	cores := make([]zapcore.Core, 0)
 	cores = append(cores, newFileOutput(filename))
 	zap.ReplaceGlobals(zap.New(zapcore.NewTee(cores...), zap.AddCaller()))
-}
-
-func InitZapFromArgs() {
-	var filepath string
-	flag.StringVar(&filepath, "log.filepath", "log/info.log", "string: path for log")
-	zap.ReplaceGlobals(zap.New(zapcore.NewTee(newFileOutput(filepath)), zap.AddCaller()))
 }
 
 func newLumberJackWriter(filepath string) zapcore.WriteSyncer {
