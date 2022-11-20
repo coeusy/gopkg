@@ -17,3 +17,11 @@ func TestNewManager(t *testing.T) {
 	conf, _ := jsoniter.MarshalToString(m.AllSettings())
 	zap.L().Sugar().Infof(conf)
 }
+
+func TestGetConfig(t *testing.T) {
+	logger.InitZap("test")
+	InitConfigFromArgs()
+	m := GetConfig()
+	conf, _ := jsoniter.MarshalToString(m.AllSettings())
+	zap.L().Sugar().Infof(conf)
+}

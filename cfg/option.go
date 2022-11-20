@@ -10,7 +10,7 @@ const (
 var defaultOpt = Option{
 	ConfigList:     make([]string, 0),
 	NeedDatasource: true,
-	Path:           "../conf",
+	Path:           "./conf",
 	FileType:       FileTypeYml,
 }
 

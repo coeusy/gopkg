@@ -1,10 +1,21 @@
 package cfg
 
 import (
+	"os"
+	"strings"
+
 	jsoniter "github.com/json-iterator/go"
 	"github.com/spf13/viper"
 	"go.uber.org/zap"
 )
+
+var (
+	manager *Manager
+)
+
+func InitConfigFromArgs() {
+	manager = NewManagerFromArgs()
+}
 
 type Manager struct {
 	*viper.Viper
@@ -34,7 +45,6 @@ func NewManager(options ...Option) *Manager {
 	reader.SetConfigType(string(opt.FileType))
 	if opt.NeedDatasource {
 		opt.ConfigList = append(opt.ConfigList, string(configTypeDatasource))
-
 	}
 	for _, key := range opt.ConfigList {
 		zap.L().Sugar().Infof("load cfg from %s", key)
@@ -57,4 +67,31 @@ func NewManager(options ...Option) *Manager {
 		manager.Viper.Set(key, conf[key])
 	}
 	return &manager
+}
+
+func NewManagerFromArgs() *Manager {
+	optFn := make([]OptionFn, 0)
+	for _, val := range os.Args {
+		if !strings.Contains(val, "=") {
+			continue
+		}
+		arg := strings.Split(val, "=")
+		switch arg[0] {
+		case "cfg.path":
+			optFn = append(optFn, WithPath(arg[1]))
+		case "cfg.datasource":
+			if arg[1] != "1" {
+				optFn = append(optFn, WithoutDatasource())
+			}
+		case "cfg.files":
+			optFn = append(optFn, WithConfigList(strings.Split(arg[1], ",")))
+		case "cfg.type":
+			optFn = append(optFn, WithFileType(FileType(arg[1])))
+		}
+	}
+	return NewManager(NewOption(optFn...))
+}
+
+func GetConfig() *Manager {
+	return manager
 }
