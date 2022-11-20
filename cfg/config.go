@@ -1,6 +1,7 @@
 package cfg
 
 import (
+	"github.com/spf13/cast"
 	"os"
 	"strings"
 
@@ -80,7 +81,7 @@ func NewManagerFromArgs() *Manager {
 		case "cfg.path":
 			optFn = append(optFn, WithPath(arg[1]))
 		case "cfg.datasource":
-			if arg[1] != "1" {
+			if cast.ToBool(arg[1]) {
 				optFn = append(optFn, WithoutDatasource())
 			}
 		case "cfg.files":

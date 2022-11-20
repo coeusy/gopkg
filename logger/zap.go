@@ -3,6 +3,7 @@ package logger
 import (
 	"fmt"
 	"os"
+	"strings"
 	"time"
 
 	"github.com/natefinch/lumberjack"
@@ -16,9 +17,24 @@ func InitZap(filename string) {
 	zap.ReplaceGlobals(zap.New(zapcore.NewTee(cores...), zap.AddCaller()))
 }
 
-func newLumberJackWriter(filename string) zapcore.WriteSyncer {
+func InitZapFromArgs() {
+	fileCore := newFileOutput(fmt.Sprintf("log/info.log"))
+	for _, val := range os.Args {
+		if !strings.Contains(val, "=") {
+			continue
+		}
+		arg := strings.Split(val, "=")
+		switch arg[0] {
+		case "log.filepath":
+			fileCore = newFileOutput(arg[1])
+		}
+	}
+	zap.ReplaceGlobals(zap.New(zapcore.NewTee(fileCore), zap.AddCaller()))
+}
+
+func newLumberJackWriter(filepath string) zapcore.WriteSyncer {
 	lumberJackLogger := &lumberjack.Logger{
-		Filename:   fmt.Sprintf("../logs/%s.log", filename), // 日志文件位置
+		Filename:   fmt.Sprintf(filepath), // 日志文件位置
 		MaxSize:    100,
 		MaxBackups: 7,
 		MaxAge:     7,
