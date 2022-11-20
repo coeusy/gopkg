@@ -1,11 +1,11 @@
 package cfg
 
 import (
-	"github.com/spf13/cast"
 	"os"
 	"strings"
 
 	jsoniter "github.com/json-iterator/go"
+	"github.com/spf13/cast"
 	"github.com/spf13/viper"
 	"go.uber.org/zap"
 )
@@ -21,6 +21,13 @@ func InitConfigFromArgs() {
 type Manager struct {
 	*viper.Viper
 	datasource DataSource
+}
+
+func (m *Manager) GetDatasource() DataSource {
+	if m == nil {
+		return DataSource{}
+	}
+	return m.datasource
 }
 
 type configType string
