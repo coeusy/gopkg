@@ -1,9 +1,9 @@
 package logger
 
 import (
+	"flag"
 	"fmt"
 	"os"
-	"strings"
 	"time"
 
 	"github.com/natefinch/lumberjack"
@@ -18,18 +18,9 @@ func InitZap(filename string) {
 }
 
 func InitZapFromArgs() {
-	fileCore := newFileOutput(fmt.Sprintf("log/info.log"))
-	for _, val := range os.Args {
-		if !strings.Contains(val, "=") {
-			continue
-		}
-		arg := strings.Split(val, "=")
-		switch arg[0] {
-		case "log.filepath":
-			fileCore = newFileOutput(arg[1])
-		}
-	}
-	zap.ReplaceGlobals(zap.New(zapcore.NewTee(fileCore), zap.AddCaller()))
+	var filepath string
+	flag.StringVar(&filepath, "log.filepath", "log/info.log", "string: path for log")
+	zap.ReplaceGlobals(zap.New(zapcore.NewTee(newFileOutput(filepath)), zap.AddCaller()))
 }
 
 func newLumberJackWriter(filepath string) zapcore.WriteSyncer {

@@ -1,11 +1,10 @@
 package cfg
 
 import (
-	"os"
+	"flag"
 	"strings"
 
 	jsoniter "github.com/json-iterator/go"
-	"github.com/spf13/cast"
 	"github.com/spf13/viper"
 	"go.uber.org/zap"
 )
@@ -43,7 +42,7 @@ func NewManager(options ...Option) *Manager {
 	}
 	path := opt.Path
 
-	manager := Manager{
+	m := Manager{
 		Viper:      viper.New(),
 		datasource: DataSource{},
 	}
@@ -70,34 +69,26 @@ func NewManager(options ...Option) *Manager {
 		switch key {
 		case string(configTypeDatasource):
 			b, _ := jsoniter.Marshal(conf[key])
-			_ = jsoniter.Unmarshal(b, &manager.datasource)
+			_ = jsoniter.Unmarshal(b, &m.datasource)
 		}
-		manager.Viper.Set(key, conf[key])
+		m.Viper.Set(key, conf[key])
 	}
-	return &manager
+	return &m
 }
 
 func NewManagerFromArgs() *Manager {
-	optFn := make([]OptionFn, 0)
-	for _, val := range os.Args {
-		if !strings.Contains(val, "=") {
-			continue
-		}
-		arg := strings.Split(val, "=")
-		switch arg[0] {
-		case "cfg.path":
-			optFn = append(optFn, WithPath(arg[1]))
-		case "cfg.datasource":
-			if cast.ToBool(arg[1]) {
-				optFn = append(optFn, WithoutDatasource())
-			}
-		case "cfg.files":
-			optFn = append(optFn, WithConfigList(strings.Split(arg[1], ",")))
-		case "cfg.type":
-			optFn = append(optFn, WithFileType(FileType(arg[1])))
-		}
-	}
-	return NewManager(NewOption(optFn...))
+	flagOpt := Option{}
+	flag.StringVar(&flagOpt.Path, "cfg.path", "conf/", "string: path of configuration, default is conf/")
+	flag.BoolVar(&flagOpt.NeedDatasource, "cfg.datasource", true, "boolean: use datasource config or not, default is true")
+
+	var files string
+	flag.StringVar(&files, "cfg.files", "", "string: config filename seperated by comma")
+	flagOpt.ConfigList = strings.Split(files, ",")
+
+	var fileType string
+	flag.StringVar(&fileType, "cfg.type", "yml", "string: config file type, such as json, yml, yaml, default is yml")
+	flagOpt.FileType = FileType(fileType)
+	return NewManager(flagOpt)
 }
 
 func GetConfig() *Manager {

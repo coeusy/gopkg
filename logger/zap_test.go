@@ -1,9 +1,10 @@
 package logger
 
 import (
-	"go.uber.org/zap"
-	"os"
+	"flag"
 	"testing"
+
+	"go.uber.org/zap"
 )
 
 func TestInitZap(t *testing.T) {
@@ -12,7 +13,7 @@ func TestInitZap(t *testing.T) {
 }
 
 func TestInitZapFromArgs(t *testing.T) {
-	os.Args = []string{"log.filepath=log/ok.log"}
+	_ = flag.Set("log.filepath", "log/ok.log")
 	InitZapFromArgs()
 	zap.L().Sugar().Infof("test")
 }
