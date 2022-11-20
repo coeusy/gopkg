@@ -103,3 +103,14 @@ func NewManagerFromArgs() *Manager {
 func GetConfig() *Manager {
 	return manager
 }
+
+func GetDatasource() DataSource {
+	if manager == nil {
+		return DataSource{}
+	}
+	return manager.datasource
+}
+
+func GetKafka() KafkaConf {
+	return GetDatasource().Kafka
+}

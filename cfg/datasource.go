@@ -5,9 +5,9 @@ type InnerConfig struct {
 }
 
 type DataSource struct {
-	RDS       RDSConf   `json:"rds"`
-	Redis     RedisConf `json:"cache"`
-	KafkaConf KafkaConf `json:"kafka"`
+	RDS   RDSConf   `json:"rds"`
+	Redis RedisConf `json:"cache"`
+	Kafka KafkaConf `json:"kafka"`
 }
 
 type RDSConf struct {
