@@ -5,8 +5,9 @@ type InnerConfig struct {
 }
 
 type DataSource struct {
-	RDS   RDSConf   `json:"rds"`
-	Redis RedisConf `json:"cache"`
+	RDS       RDSConf   `json:"rds"`
+	Redis     RedisConf `json:"cache"`
+	KafkaConf KafkaConf `json:"kafka"`
 }
 
 type RDSConf struct {
@@ -33,4 +34,12 @@ type RedisConf struct {
 	Port     int    `json:"port"`
 	Password string `json:"password"`
 	DB       int    `json:"db"`
+}
+
+type KafkaConf struct {
+	Producer KProducerConf `json:"producer"`
+}
+
+type KProducerConf struct {
+	Servers []string `json:"servers,omitempty"`
 }

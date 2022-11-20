@@ -1,6 +1,7 @@
 package cfg
 
 import (
+	"os"
 	"testing"
 
 	jsoniter "github.com/json-iterator/go"
@@ -10,7 +11,7 @@ import (
 )
 
 func TestNewManager(t *testing.T) {
-	logger.InitZap("test")
+	logger.InitZap("../log/test")
 	opt := NewOption(WithConfigList([]string{"runtime"}))
 	zap.L().Sugar().Infof("%+v", opt)
 	m := NewManager(opt)
@@ -19,9 +20,11 @@ func TestNewManager(t *testing.T) {
 }
 
 func TestGetConfig(t *testing.T) {
-	logger.InitZap("test")
+	os.Args = []string{"cfg.path=../conf", "cfg.files=runtime"}
+	logger.InitZap("../log/test")
 	InitConfigFromArgs()
 	m := GetConfig()
 	conf, _ := jsoniter.MarshalToString(m.AllSettings())
 	zap.L().Sugar().Infof(conf)
+	zap.L().Sugar().Infof("%+v", m.GetDatasource())
 }

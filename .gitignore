@@ -16,4 +16,5 @@
 
 conf/
 logs/
-.idea
+log/
+.idea/
