@@ -21,7 +21,9 @@ func InitCMD() {
 }
 
 func InitConfigFromCMD() {
-	cmdOpt.ConfigList = strings.Split(cmdFiles, ",")
+	if len(cmdFiles) > 0 {
+		cmdOpt.ConfigList = strings.Split(cmdFiles, ",")
+	}
 	cmdOpt.FileType = FileType(cmdFileType)
 	cmdManager = NewManager(cmdOpt)
 }
