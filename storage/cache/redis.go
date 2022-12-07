@@ -8,11 +8,12 @@ import (
 	"github.com/coeusy/gopkg/cfg"
 )
 
-func ConvConfToOpt(conf cfg.RedisConf) *redis.Options {
-	return &redis.Options{
+func NewRedisClientFromConf(conf cfg.RedisConf) *redis.Client {
+	opt := &redis.Options{
 		Addr:       fmt.Sprintf("%s:%d", conf.Host, conf.Port),
 		Password:   conf.Password,
 		DB:         conf.DB,
 		MaxRetries: 2,
 	}
+	return redis.NewClient(opt)
 }
