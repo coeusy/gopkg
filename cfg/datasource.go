@@ -13,6 +13,7 @@ type DataSource struct {
 type RDSConf struct {
 	Connection RDSConnection `json:"connection"`
 	Database   string        `json:"database"`
+	Dialect    string        `json:"dialect"`
 }
 
 type RDSConnection struct {
