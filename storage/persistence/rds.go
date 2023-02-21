@@ -2,8 +2,9 @@ package persistence
 
 import (
 	"fmt"
-	"github.com/coeusy/gopkg/cfg"
 	"github.com/jinzhu/gorm"
+
+	"github.com/coeusy/gopkg/cfg"
 )
 
 const urlFmt = "%s:%s@tcp(%s:%d)/%s?charset=%s"
