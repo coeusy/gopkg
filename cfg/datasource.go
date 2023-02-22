@@ -14,6 +14,7 @@ type RDSConf struct {
 	Connection RDSConnection `json:"connection"`
 	Database   string        `json:"database"`
 	Dialect    string        `json:"dialect"`
+	Debug      bool          `json:"debug"`
 }
 
 type RDSConnection struct {

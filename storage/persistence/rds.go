@@ -2,6 +2,7 @@ package persistence
 
 import (
 	"fmt"
+
 	"github.com/jinzhu/gorm"
 
 	"github.com/coeusy/gopkg/cfg"
@@ -15,6 +16,9 @@ func NewConnection(cfg cfg.RDSConf) *gorm.DB {
 	dbConn, err := gorm.Open(cfg.Dialect, url)
 	if err != nil {
 		panic(err)
+	}
+	if cfg.Debug {
+		return dbConn.Debug()
 	}
 	return dbConn
 }
