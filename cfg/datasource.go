@@ -5,9 +5,11 @@ type InnerConfig struct {
 }
 
 type DataSource struct {
-	RDS   RDSConf   `json:"rds"`
-	Redis RedisConf `json:"cache"`
-	Kafka KafkaConf `json:"kafka"`
+	RDS           RDSConf           `json:"rds"`
+	Redis         RedisConf         `json:"cache"`
+	Kafka         KafkaConf         `json:"kafka"`
+	InfluxDB      InfluxDBConf      `json:"influxdb"`
+	ElasticSearch ElasticSearchConf `json:"elasticsearch"`
 }
 
 type RDSConf struct {
@@ -39,9 +41,18 @@ type RedisConf struct {
 }
 
 type KafkaConf struct {
-	Producer KProducerConf `json:"producer"`
+	Servers []string `json:"servers,omitempty"`
 }
 
-type KProducerConf struct {
-	Servers []string `json:"servers,omitempty"`
+type InfluxDBConf struct {
+	Host     string `json:"host,omitempty"`
+	Port     int    `json:"port,omitempty"`
+	User     string `json:"user,omitempty"`
+	Password string `json:"password,omitempty"`
+}
+
+type ElasticSearchConf struct {
+	Hosts    []string `json:"hosts,omitempty"`
+	User     string   `json:"user,omitempty"`
+	Password string   `json:"password,omitempty"`
 }

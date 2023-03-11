@@ -31,3 +31,19 @@ func TestGetConfig(t *testing.T) {
 	InitConfigFromCMD()
 	fmt.Println(GetConfig())
 }
+
+func TestGetElasticSearch(t *testing.T) {
+	InitCMD()
+	fmt.Println(flag.Set("cfg.path", "../conf"))
+	fmt.Println(flag.Set("cfg.files", "runtime"))
+	InitConfigFromCMD()
+	fmt.Println(GetES())
+}
+
+func TestGetInfluxDB(t *testing.T) {
+	InitCMD()
+	fmt.Println(flag.Set("cfg.path", "../conf"))
+	fmt.Println(flag.Set("cfg.files", "runtime"))
+	InitConfigFromCMD()
+	fmt.Println(GetInfluxDB())
+}

@@ -42,3 +42,11 @@ func GetDatasource() DataSource {
 func GetKafka() KafkaConf {
 	return GetDatasource().Kafka
 }
+
+func GetInfluxDB() InfluxDBConf {
+	return GetDatasource().InfluxDB
+}
+
+func GetES() ElasticSearchConf {
+	return GetDatasource().ElasticSearch
+}
