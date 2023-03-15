@@ -50,3 +50,7 @@ func GetInfluxDB() InfluxDBConf {
 func GetES() ElasticSearchConf {
 	return GetDatasource().ElasticSearch
 }
+
+func GetRedis() RedisConf {
+	return GetDatasource().Redis
+}

@@ -47,3 +47,11 @@ func TestGetInfluxDB(t *testing.T) {
 	InitConfigFromCMD()
 	fmt.Println(GetInfluxDB())
 }
+
+func TestGetRedis(t *testing.T) {
+	InitCMD()
+	fmt.Println(flag.Set("cfg.path", "../conf"))
+	fmt.Println(flag.Set("cfg.files", "runtime"))
+	InitConfigFromCMD()
+	fmt.Println(GetRedis())
+}

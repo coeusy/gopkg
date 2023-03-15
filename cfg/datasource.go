@@ -6,7 +6,7 @@ type InnerConfig struct {
 
 type DataSource struct {
 	RDS           RDSConf           `json:"rds"`
-	Redis         RedisConf         `json:"cache"`
+	Redis         RedisConf         `json:"redis"`
 	Kafka         KafkaConf         `json:"kafka"`
 	InfluxDB      InfluxDBConf      `json:"influxdb"`
 	ElasticSearch ElasticSearchConf `json:"elasticsearch"`
